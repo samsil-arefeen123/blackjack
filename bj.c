@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include <time.h>
+#include<ctype.h>
 // Function to initialize the deck
 void initializeDeck(char deck[]) {
     int k = 0;
@@ -134,7 +135,7 @@ int main() {
         printf("Do you want to hit or stay? (h/s): ");
       //  fflush(stdout);
         scanf(" %c", &choice);
-        if (choice == 'h') {
+        if (tolower(choice) == 'h') {
             user_card=giving_random_cards(deck,&card_taken,&user_card_taken);
             user_deck[user_card_taken-1]=user_card;
             point_calculate(user_deck,&user_point,&user_card_taken,&user_aces);
@@ -161,7 +162,7 @@ int main() {
                 printf("Dealer wins\n");
                 return 0;
             }
-        } else if (choice == 's') {
+        } else if (tolower(choice) == 's') {
             break;
         } else {
             printf("Invalid choice. Please enter 'h' or 's'.\n");
