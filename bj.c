@@ -30,7 +30,31 @@ char giving_random_cards(char deck[],int *card_taken,int *user_card_taken) {
     }
     return card;
 }
-void print_card(){}
+void print_card(char user_deck[],int *user_card_taken,char str[],char userordealer[]) {
+        printf("%s %s card is ",userordealer, str);
+    // Print the user's last card or new card
+        if(user_deck[*user_card_taken-1]=='1'){
+            printf("%c0 ",user_deck[*user_card_taken-1]);
+        }
+        else{
+            printf("%c ",user_deck[*user_card_taken-1]);
+        }
+        printf("\n");
+        
+    }
+void print_deck(char user_deck[],int *user_card_taken,char str[]) {
+    // Print the user's deck of cards
+    printf("%s deck is: ", str);
+    for(int i=0;i<*user_card_taken;i++){
+        if(user_deck[i]=='1'){
+            printf("%c0 ",user_deck[i]);
+            continue;
+        }
+        printf("%c ",user_deck[i]);
+    }
+    printf("\n");
+}
+
 void point_calculate(char user_deck[],int *point,int *user_card_taken,int *user_aces) {
     // Calculate the points based on the cards in the user's decks last card
     // and update the point variable accordingly
@@ -92,12 +116,13 @@ int main() {
     //dealer_card_taken+=1;
     dealer_deck[dealer_card_taken-1]=dealer_card;
     point_calculate(dealer_deck,&dealer_point,&dealer_card_taken,&dealer_aces);
-    if(dealer_deck[dealer_card_taken-1]=='1'){
+    /*if(dealer_deck[dealer_card_taken-1]=='1'){
         printf("Dealer's first card is %c0\n", dealer_card);
     }
     else{
         printf("Dealer's first card is %c\n", dealer_card);
-    }
+    }*/
+    print_card(dealer_deck,&dealer_card_taken,"first","Dealer");
     printf("Another hidden \n", dealer_card);
     dealer_card=giving_random_cards(deck,&card_taken,&dealer_card_taken);
     dealer_deck[dealer_card_taken-1]=dealer_card;
@@ -108,14 +133,16 @@ int main() {
     //user_card_taken+=1;
 
     user_deck[user_card_taken-1]=user_card;
+    print_card(user_deck,&user_card_taken,"first","Your");
     point_calculate(user_deck,&user_point,&user_card_taken,&user_aces);
     //User's Second card
     user_card=giving_random_cards(deck,&card_taken,&user_card_taken);
     user_deck[user_card_taken-1]=user_card;
+    print_card(user_deck,&user_card_taken,"second","Your");
  //   printf("User card is %c\n", user_card);
     //printf("User card taken is %d\n", user_card_taken);
     point_calculate(user_deck,&user_point,&user_card_taken,&user_aces);
-    printf("Your first two cards are %c", user_deck[0]);
+    /*printf("Your first two cards are %c", user_deck[0]);
     if(user_deck[0]=='1'){
         printf("0 ");
     }
@@ -128,23 +155,24 @@ int main() {
     }
     else{
         printf("\n");
-    }
+    }*/
+    //print_card(user_deck,&user_card_taken,"first","Your");
     printf("Your points are %d\n", user_point);
 
     if(dealer_point==21 && user_point!=21){
-        printf("Dealer hidden card is %c\n", dealer_deck[dealer_card_taken-1]);
+        print_card(dealer_deck,&dealer_card_taken,"hidden","Dealer");
         printf("Dealer points are %d\n", dealer_point);
         printf("Dealer wins by blackjack\n");
         return 0;
     }
     else if(user_point==21 && dealer_point!=21){
-        printf("Dealer hidden card is %c\n", dealer_deck[dealer_card_taken-1]);
+        print_card(dealer_deck,&dealer_card_taken,"hidden","Dealer");
         printf("Dealer points are %d\n", dealer_point);
         printf("You win by blackjack\n");
         return 0;
     }
     else if(user_point==21 && dealer_point==21){
-        printf("Dealer hidden card is %c\n", dealer_deck[dealer_card_taken-1]);
+        print_card(dealer_deck,&dealer_card_taken,"hidden","Dealer");
         printf("Dealer points are %d\n", dealer_point);
         printf("Its a blackjacked Draw\n");
         return 0;
@@ -163,26 +191,28 @@ int main() {
             user_card=giving_random_cards(deck,&card_taken,&user_card_taken);
             user_deck[user_card_taken-1]=user_card;
             point_calculate(user_deck,&user_point,&user_card_taken,&user_aces);
-            if(user_deck[user_card_taken-1]=='1'){
+            /*if(user_deck[user_card_taken-1]=='1'){
             printf("Your new card is %c0\n", user_deck[user_card_taken-1]);
             }
             else{
                 printf("Your new card is %c\n", user_deck[user_card_taken-1]);
-            }
-            printf("Your new deck is:");
+            }*/
+            
             //loop for showing new deck
-            for(int i=0;i<user_card_taken;i++){
+            /*for(int i=0;i<user_card_taken;i++){
                     if(user_deck[i]=='1'){
                         printf("%c0 ",user_deck[i]);
                         continue;
                     }
 
                 printf("%c ",user_deck[i]);
-            }
-
+            }*/
+            print_card(user_deck,&user_card_taken,"new","Your");
+            print_deck(user_deck,&user_card_taken,"Your");
             printf("Your points are %d\n", user_point);
 
            if(user_point>21){
+                printf("You exceeded 21\n");
                 printf("Dealer wins\n");
                 return 0;
             }
@@ -194,17 +224,19 @@ int main() {
     }
     //loop for dealers turn
    // int j=0;
-   if(dealer_deck[dealer_card_taken-1]=='1'){
+   /*if(dealer_deck[dealer_card_taken-1]=='1'){
     printf("Dealer's hidden card is %c0\n", dealer_deck[dealer_card_taken-1]);
  }
     else{
 printf("Dealer's hidden card is %c\n", dealer_deck[dealer_card_taken-1]);
-}
-printf("Dealer's points are %d\n", dealer_point);
+}*/
+    print_card(dealer_deck,&dealer_card_taken,"hidden","Dealer");
+    print_deck(dealer_deck,&dealer_card_taken,"Dealer");
+    printf("Dealer's points are %d\n", dealer_point);
     while (1)
     {
         if(dealer_point>21){
-
+            printf("Dealer exceeded 21\n");
             printf("you win\n");
             return 0;
         }
@@ -240,15 +272,19 @@ printf("Dealer's points are %d\n", dealer_point);
         dealer_card=giving_random_cards(deck,&card_taken,&dealer_card_taken);
         dealer_deck[dealer_card_taken-1]=dealer_card;
         point_calculate(dealer_deck,&dealer_point,&dealer_card_taken,&dealer_aces);
-        if(dealer_deck[dealer_card_taken-1]=='1'){
+        print_card(dealer_deck,&dealer_card_taken,"new","Dealer");
+        print_deck(dealer_deck,&dealer_card_taken,"Dealer");
+        printf("Dealer's points are %d\n", dealer_point);
+
+       /* if(dealer_deck[dealer_card_taken-1]=='1'){
         printf("Dealer's new card is %c0\n", dealer_deck[dealer_card_taken-1]);
         }
         else{
             printf("Dealer's new card is %c\n", dealer_deck[dealer_card_taken-1]);
-        }
+        }*/
         
-        printf("Dealer's points are %d\n", dealer_point);
-
+        
+        
     }
 
     //user_deck[user_card_taken-1]=user_card;
